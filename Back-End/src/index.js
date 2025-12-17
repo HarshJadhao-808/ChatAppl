@@ -1,22 +1,25 @@
 import express from 'express'
 import cors from 'cors'
-import server from 'socket.io'
-import { Server as SocketIOServer } from "socket.io";
+import http from 'http'
+import { Server } from "socket.io";
 
 const app = express()
+const server = http.createServer(app) 
 app.use(express.json())
+app.use(cors())
 const PORT = 8000
 
+app.get("/", (req, res) => {
+	res.send("Socket.IO chat server running");
+});
 
-const chatserver = http.createServer(app)
 
-const io = server(chatserver)
-
-io.on("connections",(socket)=>{
-    console.log("connection established")
+server.listen(PORT,()=>{
+    console.log(`chat server is running on http://localhost:${PORT}`)
 })
 
-app.use(cors())
-app.listen(PORT,()=>{
-    console.log(`server is running on http://localhost:${PORT}`)
-})
+
+
+
+
+
